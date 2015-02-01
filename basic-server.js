@@ -9,7 +9,9 @@ var app = express();
 var port = 8300;
 
 app.get('/*', function(req,res){
-   res.send('hello world - twitterbot'); 
+   
+    res.send('Its alive!');
+    sendClue();
 });
 
 var server = app.listen(port, function(){
@@ -22,14 +24,17 @@ var config = require('./config.js');
 
 var Twitter = require('twit');
 var client = new Twitter({
-    consumer_key:         config.consumer_key,
-    consumer_secret:      config.consumer_secret,
-    access_token:         config.access_token,
-    access_token_secret:  config.access_token_secret
+    consumer_key:         config.twitter_consumer_key,
+    consumer_secret:      config.twitter_consumer_secret,
+    access_token:         config.twitter_access_token,
+    access_token_secret:  config.twitter_access_token_secret
 });
 
-var Bitly = require('bitly');
-var bitly = new Bitly('sottenad', '982f6e5b389bc9f9d56fee4561171e3bac99c1eb');
+var Bitly = require('node-bitlyapi');
+var bitly = new BitlyAPI({
+    client_id: config.bitly_id,
+    client_secret: config.bitly_secret
+});
 
 //
 // filter the public stream by english tweets containing `#apple`
@@ -47,7 +52,7 @@ stream.on('tweet', function (tweet) {
   });
 });
 
-/*
+
 //Todo: make this return a valid bitly url
 var makeUrl = function(clueId){
     var def = q.defer();
@@ -55,11 +60,12 @@ var makeUrl = function(clueId){
         if (err) console.log(err);
         
         var short_url = response.data.url
-        console.log('Shorturl:'+short_url);
+        //Uncomment to view raw bitly response. Useful for troubleshooting.
+        //console.log('Shorturl: %j', response);
         def.resolve(short_url);
     });   
 }
-*/
+
 
 var getClue = function(){
     var defered = q.defer();
@@ -77,20 +83,20 @@ var sendClue = function(handle){
         var clueid = myClue.id;
         var answer = myClue.question;
         var category = myClue.category.title;
-        console.log('clueid:'+clueid);
-        console.log('answer:' + answer);
         var tweetText = '@'+handle+' '+category+': '+answer;
         if(tweetText.length < 140){
-        console.log(myClue);
-        client.post('statuses/update', { status: tweetText }, function(err, data, response) {
-            console.log(data)
-            if(err) console.log(err)
-        })
+            console.log('makeUrl:' + clueid);
+            makeUrl(clueid);
+            //client.post('statuses/update', { status: tweetText }, function(err, data, response) {
+            //    console.log(data)
+            //    if(err) console.log(err)
+            //})
         }else{
-         console.log('too long. trying again');
-         sendClue(handle);   
+            //console.log('too long. trying again');
+            sendClue(handle);   
         }
-        console.log('updating status');
+        //console.log('updating status');
+        //console.log(tweetText);
     });
 }
 
