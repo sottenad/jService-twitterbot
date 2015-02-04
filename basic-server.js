@@ -6,7 +6,16 @@ var _ = require('underscore');
 
 var express = require('express');
 var app = express();
-var port = 8300;
+var port;
+
+//Set dev-specific values here. 
+app.configure('development', function(){
+    port = 8300; 
+});
+ 
+app.configure('production', function(){
+    port = 80;
+});
 
 app.get('/*', function(req,res){
    
