@@ -37,9 +37,6 @@ var bitly = new Bitly({
 });
 bitly.setAccessToken(config.bitly_access_token);
 
-//
-// filter the public stream by english tweets containing `#apple`
-//
 var stream = client.stream('user', { track: '@jservicebot' })
 
 stream.on('tweet', function (tweet) {
@@ -54,20 +51,18 @@ stream.on('tweet', function (tweet) {
 });
 
 
-//Todo: make this return a valid bitly url
 var makeUrl = function(clueId){
     var def = q.defer();
-    var urlToShorten = 'http://jservice.io/clue/'+clueId;
+    var urlToShorten = 'http://jservice.io/clues/'+clueId;
     bitly.shortenLink(urlToShorten, function(err, results) {
         // Do something with your new, shorter url...
         jsonResults = JSON.parse(results);
-        console.log(typeof(results));
         if(typeof(results) != 'undefined'){
             console.log('resolved '+jsonResults.data.url);
             def.resolve(jsonResults.data.url);
         }
     }); 
-    return defered.promise;
+    return def.promise;
 }
 
 
@@ -87,30 +82,21 @@ var sendClue = function(handle){
         var clueid = myClue.id;
         var answer = myClue.question;
         var category = myClue.category.title;
-        //TODO: find out why the defefrred isnt working.
         var tweetLink = makeUrl(clueid).then(function(link){
-            console.log(link);
             var tweetText = '@'+handle+' '+category+': '+answer+'-'+link;            
             console.log(tweetText);
             if(tweetText.length < 140){
 
-                //client.post('statuses/update', { status: tweetText }, function(err, data, response) {
-                //    console.log(data)
-                //    if(err) console.log(err)
-                //})
+                client.post('statuses/update', { status: tweetText }, function(err, data, response) {
+                    console.log(data)
+                    if(err) console.log(err)
+                })
             }else{
-                //console.log('too long. trying again');
-                sendClue(handle);   
+                console.log('too long. trying again');
+                sendClue(handle);    
             }
-            //console.log('updating status');
-            //console.log(tweetText);
         });
     });
 }
 
-
-/*
-getClue().then(function(data){
-  console.log(data);  
-})
-*/
+sendClue();
