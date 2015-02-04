@@ -3,10 +3,12 @@
 var request = require('request');
 var q = require('q');
 var _ = require('underscore');
-
+var config = require('./config.js');
+var Twitter = require('twit');
 var express = require('express');
+var Bitly = require('node-bitlyapi');
+
 var app = express();
-var port = 80;
 
 //Set dev-specific values here. 
 
@@ -15,15 +17,12 @@ app.get('/*', function(req,res){
     res.send('Its alive!');
 });
 
-var server = app.listen(port, function(){
-    console.log('Basic-server is listening on port '+port);
+var server = app.listen(app.get('port'), function(){
+    console.log('Basic-server is listening on port '+app.get('port'));
 });
 
 //Need to adjust this config setting to the file you create that holds your config values
 //Alternatively, you can hardcode these values, but dont share them.
-var config = require('./config.js');
-
-var Twitter = require('twit');
 var client = new Twitter({
     consumer_key:         config.twitter_consumer_key,
     consumer_secret:      config.twitter_consumer_secret,
@@ -31,7 +30,7 @@ var client = new Twitter({
     access_token_secret:  config.twitter_access_token_secret
 });
 
-var Bitly = require('node-bitlyapi');
+
 var bitly = new Bitly({
     client_id: config.bitly_id,
     client_secret: config.bitly_secret
