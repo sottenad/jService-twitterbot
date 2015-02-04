@@ -10,11 +10,7 @@ var port = 80;
 
 //Set dev-specific values here. 
 
-var env = process.env.NODE_ENV || 'development';
-if (env == 'development') {
-    port = 8300; 
-}
-
+app.set('port', (process.env.PORT || 8300))
 app.get('/*', function(req,res){   
     res.send('Its alive!');
 });
