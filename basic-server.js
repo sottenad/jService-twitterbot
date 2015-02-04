@@ -16,11 +16,11 @@ app.set('port', (process.env.PORT || 8300))
 app.get('/*', function(req,res){   
     res.send('Its alive!');
 });
-/*
+
 var server = app.listen(app.get('port'), function(){
     console.log('Basic-server is listening on port '+app.get('port'));
 });
-*/
+
 //Need to adjust this config setting to the file you create that holds your config values
 //Alternatively, you can hardcode these values, but dont share them.
 var client = new Twitter({
@@ -41,6 +41,10 @@ var stream = client.stream('user', { track: '@jservicebot' })
 
 stream.on('tweet', function (tweet) {
   var screenName = tweet.user.screen_name;
+    if(screenName.toLowerCase === '@jservicebot'){
+        //Boot this - we dont want to reply to our own tweets
+        return false;   
+    }
   //We only want to respond when we are mentioned in a tweet.
   var mentions = tweet.entities.user_mentions;
   _.each(mentions, function(val, i){
