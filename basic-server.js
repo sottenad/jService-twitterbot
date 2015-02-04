@@ -11,7 +11,6 @@ var Bitly = require('node-bitlyapi');
 var app = express();
 
 //Set dev-specific values here. 
-
 app.set('port', (process.env.PORT || 8300))
 app.get('/*', function(req,res){   
     res.send('Its alive!');

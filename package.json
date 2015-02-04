@@ -1,6 +1,9 @@
 {
   "name": "jservice-bot",
   "version": "1.0.0",
+  "engines": {
+    "node": "0.10.x"
+  }
   "description": "Twitter bot companion to jservice.io",
   "main": "basic-server.js",
   "dependencies": {
