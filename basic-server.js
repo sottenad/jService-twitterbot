@@ -9,13 +9,12 @@ var app = express();
 var port;
 
 //Set dev-specific values here. 
-app.configure('development', function(){
+var env = process.env.NODE_ENV || 'development';
+if (env == 'development') {
     port = 8300; 
-});
- 
-app.configure('production', function(){
+}else if(env == 'production'){
     port = 80;
-});
+}
 
 app.get('/*', function(req,res){
    
