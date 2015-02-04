@@ -1,1 +1,1 @@
-web NODE_ENV=production node basic-server.js
+web node basic-server.js
