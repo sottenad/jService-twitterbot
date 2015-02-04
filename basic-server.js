@@ -11,7 +11,7 @@ var port = 8300;
 app.get('/*', function(req,res){
    
     res.send('Its alive!');
-    sendClue();
+    //sendClue();
 });
 
 var server = app.listen(port, function(){
@@ -99,4 +99,4 @@ var sendClue = function(handle){
     });
 }
 
-sendClue();
+
