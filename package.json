@@ -1,0 +1,35 @@
+{
+  "name": "jservice-bot",
+  "version": "1.0.0",
+  "description": "Twitter bot companion to jservice.io",
+  "main": "basic-server.js",
+  "dependencies": {
+    "express": "^4.11.1",
+    "node-bitlyapi": "^0.4.0",
+    "q": "^1.1.2",
+    "request": "^2.51.0",
+    "twit": "^1.1.19",
+    "underscore": "^1.7.0",
+    "nodemon": "^1.3.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sottenad/jservice-twitterbot.git"
+  },
+  "keywords": [
+    "trivia",
+    "jeopardy",
+    "twitter",
+    "bot"
+  ],
+  "author": "Steve Ottenad",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sottenad/jservice-twitterbot/issues"
+  },
+  "homepage": "https://github.com/sottenad/jservice-twitterbot"
+}
