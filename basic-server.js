@@ -6,14 +6,12 @@ var _ = require('underscore');
 
 var express = require('express');
 var app = express();
-var port;
+var port = 80;
 
 //Set dev-specific values here. 
 var env = process.env.NODE_ENV || 'development';
 if (env == 'development') {
     port = 8300; 
-}else if(env == 'production'){
-    port = 80;
 }
 
 app.get('/*', function(req,res){
